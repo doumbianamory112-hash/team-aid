@@ -1,0 +1,9 @@
+T=print("BONJOUR VOUS ALLEZ BIEN ")
+print("vous avez ")
+AGE=13
+print(type(AGE))
+print("l'homme le plus\t riche de babylone")
+print(AGE,"ans")
+print('*' *15)
+cour= 'Namory'
+print(cour[0:4])
