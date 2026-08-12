@@ -12,18 +12,42 @@ const whyJoin = [
 
 const steps = ['Remplir le formulaire', 'Confirmation', 'Commencer à apprendre'];
 
+const formationsList = [
+  'Développement Web',
+  'Design Graphique',
+  'Marketing Digital',
+  'Bureautique',
+  'Comptabilité',
+  'Communication',
+];
+
+const countriesList = [
+  'Burkina Faso',
+  'Côte d’Ivoire',
+  'Mali',
+  'Niger',
+  'Sénégal',
+  'Togo',
+  'Bénin',
+  'Guinée',
+  'Cameroun',
+  'RD Congo',
+];
+
 export default function HomePage() {
   return (
     <div className="min-h-screen bg-slate-950 text-slate-100">
-      <header className="mx-auto max-w-6xl px-6 py-8">
-        <div className="flex items-center justify-between">
+      <header className="mx-auto max-w-6xl px-4 py-8 sm:px-6">
+        <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
           <div className="text-2xl font-bold text-cyan-300 text-cyan-glow">TEAM AID</div>
-          <a href="/register" className="rounded-full border border-cyan-400 bg-cyan-500/10 px-5 py-2 text-sm font-semibold text-cyan-200 shadow-[0_0_20px_rgba(0,229,255,0.5)]">S’inscrire</a>
+          <a href="/register" className="w-full rounded-full border border-cyan-400 bg-cyan-500/10 px-5 py-3 text-center text-sm font-semibold text-cyan-200 shadow-[0_0_20px_rgba(0,229,255,0.5)] transition hover:bg-cyan-500/20 sm:w-auto">
+            S’inscrire
+          </a>
         </div>
       </header>
 
-      <main className="mx-auto max-w-6xl px-6 pb-12">
-        <section className="grid items-center gap-10 py-8 md:grid-cols-2">
+      <main className="mx-auto max-w-6xl px-4 py-8 sm:px-6 pb-12">
+        <section className="grid gap-10 py-8 md:grid-cols-2">
           <div>
             <h1 className="max-w-xl text-4xl font-extrabold leading-tight text-white md:text-6xl">
               Rejoignez une communauté de formation et d’accompagnement qui change des vies
@@ -64,12 +88,34 @@ export default function HomePage() {
 
         <section className="mt-10">
           <h2 className="text-3xl font-bold text-white">Pourquoi rejoindre TEAM AID</h2>
-          <div className="mt-6 grid gap-4 md:grid-cols-3">
+          <div className="mt-6 grid gap-4 grid-cols-1 sm:grid-cols-2 md:grid-cols-3">
             {whyJoin.map((item, index) => (
-              <div key={index} className="rounded-2xl border border-cyan-500/40 bg-slate-900/70 p-5 glow-card">
+              <div key={index} className="rounded-2xl border border-cyan-500/40 bg-slate-900/70 p-5 glow-card min-h-[140px]">
                 <div className="text-xl font-semibold text-cyan-300">{item.title}</div>
                 <p className="mt-3 text-slate-300">{item.text}</p>
               </div>
+            ))}
+          </div>
+        </section>
+
+        <section className="mt-10">
+          <h2 className="text-3xl font-bold text-white">Nos formations disponibles</h2>
+          <div className="mt-6 grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
+            {formationsList.map((formation) => (
+              <div key={formation} className="rounded-2xl border border-cyan-500/40 bg-slate-900/70 p-5 min-h-[112px]">
+                <div className="text-lg font-semibold text-cyan-300">{formation}</div>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        <section className="mt-10">
+          <h2 className="text-3xl font-bold text-white">Pays couverts</h2>
+          <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
+            {countriesList.map((country) => (
+              <span key={country} className="w-full rounded-2xl border border-cyan-400/40 bg-slate-800 px-4 py-3 text-sm text-cyan-100 sm:w-auto">
+                {country}
+              </span>
             ))}
           </div>
         </section>

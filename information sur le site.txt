@@ -1,7 +1,17 @@
 http://localhost:5173/register
 http://localhost:5173/dashboard
 http://localhost:5173/admin
+pour le lancement local:
+
 npm --prefix backend run dev
 npm --prefix frontend run dev
+
+
 mot de passe : adminTEAMAID
- email: namorydoumbia9448@gmail.com
+ email: namorydoumbia9448@gmail.com 
+lien direct du git  : https://github.com
+lien direct du Railway : https://railway.com
+lien du site de projet git : https://github.com/doumbianamory112-hash/team-aid
+lien du site de projet Railway:   https://railway.com/project/ae148e19-bf52-4220-b7e8-c91b667b53f9/service/adda8a09-830a-4945-8fc6-78abec89a340/database
+le site pour telecharger les modeles de powerpoint : slidesgo
+LE LIEN VERS MON SITE :   https://team-aid-production.up.railway.app 

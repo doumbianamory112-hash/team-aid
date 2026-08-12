@@ -1,10 +1,30 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
+import { apiUrl } from '../utils/api';
 
 const shareMessage = 'Rejoignez TEAM AID et accédez à des formations gratuites qui changent des vies ! Inscrivez-vous maintenant : ';
 
+const FORMATIONS = [
+  'Développement Web',
+  'Design Graphique',
+  'Marketing Digital',
+  'Bureautique',
+  'Comptabilité',
+  'Réseaux et Sécurité',
+  'Communication',
+  'Gestion de Projet',
+  'Entrepreneuriat',
+  'Leadership',
+];
+
+const PAYS = [
+  'Mali', 'Sénégal', 'Côte d\'Ivoire', 'Burkina Faso', 'Guinée', 'Niger', 'Togo', 'Bénin', 'Cameroun', 'Gabon',
+  'Mauritanie', 'Tchad', 'Congo', 'RD Congo', 'Madagascar', 'Algérie', 'Maroc', 'Tunisie', 'Égypte', 'Libye',
+  'France', 'Belgique', 'Canada', 'États-Unis', 'Brésil', 'Nigeria', 'Ghana', 'Kenya', 'Ethiopie', 'Afrique du Sud',
+  'Allemagne', 'Espagne', 'Italie', 'Portugal', 'Suisse', 'Pays-Bas', 'Royaume-Uni', 'Suisse', 'Sénégal',
+  'Congo', 'Guinée-Bissau', 'Cap-Vert', 'Sierra Leone', 'Liberia', 'Gambie', 'Mali', 'Maurice', 'Seychelles', 'Tanzanie'
+];
+
 export default function RegisterPage() {
-  const [formations, setFormations] = useState([]);
-  const [pays, setPays] = useState([]);
   const [success, setSuccess] = useState(false);
   const [form, setForm] = useState({
     nom: '',
@@ -14,25 +34,11 @@ export default function RegisterPage() {
     telephone: '',
     email: '',
     ville: '',
-    paysId: '',
-    formationId: '',
+    pays: '',
+    formation: '',
     niveauEtude: '',
     motivation: '',
   });
-
-  useEffect(() => {
-    const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:5000';
-
-    fetch(`${apiUrl}/api/formations`)
-      .then((res) => res.json())
-      .then(setFormations)
-      .catch(() => setFormations([]));
-
-    fetch(`${apiUrl}/api/pays`)
-      .then((res) => res.json())
-      .then(setPays)
-      .catch(() => setPays([]));
-  }, []);
 
   const handleChange = (e) => {
     setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
@@ -40,16 +46,19 @@ export default function RegisterPage() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:5000';
-    const response = await fetch(`${apiUrl}/api/register`, {
+
+    const payload = {
+      ...form,
+      pays: form.pays.trim(),
+      formation: form.formation.trim(),
+    };
+
+    const response = await fetch(apiUrl('/api/register'), {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        ...form,
-        paysId: Number(form.paysId),
-        formationId: Number(form.formationId),
-      }),
+      body: JSON.stringify(payload),
     });
+
     const data = await response.json();
     if (response.ok) {
       setSuccess(true);
@@ -87,27 +96,34 @@ export default function RegisterPage() {
           <h1 className="text-3xl font-bold text-cyan-300">Inscription TEAM AID</h1>
 
           <form onSubmit={handleSubmit} className="mt-6 grid gap-4 md:grid-cols-2">
-            <input className="rounded-xl border border-cyan-400/30 bg-slate-950 p-3" name="nom" placeholder="Nom" onChange={handleChange} required />
-            <input className="rounded-xl border border-cyan-400/30 bg-slate-950 p-3" name="prenom" placeholder="Prénom" onChange={handleChange} required />
-            <select className="rounded-xl border border-cyan-400/30 bg-slate-950 p-3" name="sexe" onChange={handleChange}>
+            <input className="rounded-xl border border-cyan-400/30 bg-slate-950 p-3" name="nom" placeholder="Nom" value={form.nom} onChange={handleChange} required />
+            <input className="rounded-xl border border-cyan-400/30 bg-slate-950 p-3" name="prenom" placeholder="Prénom" value={form.prenom} onChange={handleChange} required />
+            <select className="rounded-xl border border-cyan-400/30 bg-slate-950 p-3" name="sexe" value={form.sexe} onChange={handleChange}>
               <option value="M">M</option>
               <option value="F">F</option>
               <option value="Autre">Autre</option>
             </select>
-            <input type="date" className="rounded-xl border border-cyan-400/30 bg-slate-950 p-3" name="dateNaissance" onChange={handleChange} required />
-            <input className="rounded-xl border border-cyan-400/30 bg-slate-950 p-3" name="telephone" placeholder="Téléphone" onChange={handleChange} required />
-            <input type="email" className="rounded-xl border border-cyan-400/30 bg-slate-950 p-3" name="email" placeholder="Email" onChange={handleChange} required />
-            <input className="rounded-xl border border-cyan-400/30 bg-slate-950 p-3" name="ville" placeholder="Ville" onChange={handleChange} required />
-            <select className="rounded-xl border border-cyan-400/30 bg-slate-950 p-3" name="paysId" onChange={handleChange} required>
-              <option value="">Pays</option>
-              {pays.map((item) => <option key={item.id} value={item.id}>{item.nom}</option>)}
+            <input type="date" className="rounded-xl border border-cyan-400/30 bg-slate-950 p-3" name="dateNaissance" value={form.dateNaissance} onChange={handleChange} required />
+            <input className="rounded-xl border border-cyan-400/30 bg-slate-950 p-3" name="telephone" placeholder="Téléphone" value={form.telephone} onChange={handleChange} required />
+            <input type="email" className="rounded-xl border border-cyan-400/30 bg-slate-950 p-3" name="email" placeholder="Email" value={form.email} onChange={handleChange} required />
+            <input className="rounded-xl border border-cyan-400/30 bg-slate-950 p-3" name="ville" placeholder="Ville" value={form.ville} onChange={handleChange} required />
+
+            <select className="rounded-xl border border-cyan-400/30 bg-slate-950 p-3 text-slate-100 w-full" name="pays" value={form.pays} onChange={handleChange} required>
+              <option value="">-- Sélectionnez votre pays --</option>
+              {[...new Set(PAYS)].sort().map((pays) => (
+                <option key={pays} value={pays} className="bg-white text-slate-900">{pays}</option>
+              ))}
             </select>
-            <select className="rounded-xl border border-cyan-400/30 bg-slate-950 p-3" name="formationId" onChange={handleChange} required>
-              <option value="">Formation souhaitée</option>
-              {formations.map((item) => <option key={item.id} value={item.id}>{item.nom}</option>)}
+
+            <select className="rounded-xl border border-cyan-400/30 bg-slate-950 p-3 text-slate-100 w-full" name="formation" value={form.formation} onChange={handleChange} required>
+              <option value="">-- Sélectionnez une formation --</option>
+              {FORMATIONS.map((formation) => (
+                <option key={formation} value={formation} className="bg-white text-slate-900">{formation}</option>
+              ))}
             </select>
-            <input className="rounded-xl border border-cyan-400/30 bg-slate-950 p-3" name="niveauEtude" placeholder="Niveau d’étude" onChange={handleChange} required />
-            <textarea className="rounded-xl border border-cyan-400/30 bg-slate-950 p-3 md:col-span-2" name="motivation" placeholder="Motivation" rows="4" onChange={handleChange} required />
+
+            <input className="rounded-xl border border-cyan-400/30 bg-slate-950 p-3" name="niveauEtude" placeholder="Niveau d’étude" value={form.niveauEtude} onChange={handleChange} required />
+            <textarea className="rounded-xl border border-cyan-400/30 bg-slate-950 p-3 md:col-span-2" name="motivation" placeholder="Motivation" rows="4" value={form.motivation} onChange={handleChange} required />
             <button type="submit" className="md:col-span-2 rounded-xl bg-blue-500 px-5 py-4 text-lg font-bold text-white shadow-[0_0_25px_rgba(10,132,255,0.7)]">
               Envoyer mon inscription — Gratuit
             </button>

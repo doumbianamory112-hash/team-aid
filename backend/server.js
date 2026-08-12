@@ -204,6 +204,8 @@ app.post('/api/register', async (req, res) => {
     ville,
     paysId,
     formationId,
+    pays,
+    formation,
     niveauEtude,
     motivation
   } = req.body;
@@ -214,8 +216,6 @@ app.post('/api/register', async (req, res) => {
     !email ||
     !telephone ||
     !ville ||
-    !paysId ||
-    !formationId ||
     !niveauEtude ||
     !motivation
   ) {
@@ -225,6 +225,67 @@ app.post('/api/register', async (req, res) => {
   }
 
   try {
+    const resolvePaysId = async (paysValue) => {
+      const normalized = String(paysValue ?? '').trim();
+      if (!normalized) return null;
+
+      const numericValue = Number(normalized);
+      if (Number.isInteger(numericValue) && numericValue > 0) {
+        return numericValue;
+      }
+
+      const [rows] = await pool.query(
+        'SELECT id FROM pays WHERE nom = ? LIMIT 1',
+        [normalized]
+      );
+
+      if (rows[0]?.id) {
+        return Number(rows[0].id);
+      }
+
+      const [result] = await pool.query(
+        'INSERT INTO pays (nom) VALUES (?)',
+        [normalized]
+      );
+
+      return Number(result.insertId);
+    };
+
+    const resolveFormationId = async (formationValue) => {
+      const normalized = String(formationValue ?? '').trim();
+      if (!normalized) return null;
+
+      const numericValue = Number(normalized);
+      if (Number.isInteger(numericValue) && numericValue > 0) {
+        return numericValue;
+      }
+
+      const [rows] = await pool.query(
+        'SELECT id FROM formations WHERE nom = ? LIMIT 1',
+        [normalized]
+      );
+
+      if (rows[0]?.id) {
+        return Number(rows[0].id);
+      }
+
+      const [result] = await pool.query(
+        'INSERT INTO formations (nom, active) VALUES (?, 1)',
+        [normalized]
+      );
+
+      return Number(result.insertId);
+    };
+
+    const finalPaysId = await resolvePaysId(paysId ?? pays);
+    const finalFormationId = await resolveFormationId(formationId ?? formation);
+
+    if (!finalPaysId || !finalFormationId) {
+      return res.status(400).json({
+        message: 'Veuillez sélectionner un pays et une formation.'
+      });
+    }
+
     const safeDate = new Date()
       .toISOString()
       .slice(0, 19)
@@ -255,8 +316,8 @@ app.post('/api/register', async (req, res) => {
         telephone,
         email,
         ville,
-        paysId,
-        formationId,
+        finalPaysId,
+        finalFormationId,
         niveauEtude,
         motivation,
         safeDate

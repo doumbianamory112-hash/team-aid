@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { apiUrl } from '../utils/api';
 
 export default function DashboardPage() {
   const [stats, setStats] = useState({ total: 0, trash: 0, formations: 0, pays: 0 });
@@ -15,13 +16,12 @@ export default function DashboardPage() {
   };
 
   const load = async () => {
-    const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:5000';
     const [statsRes, insRes, trashRes, formationsRes, paysRes] = await Promise.all([
-      fetch(`${apiUrl}/api/stats`),
-      fetch(`${apiUrl}/api/inscriptions?search=${filters.search}&formation=${filters.formation}&pays=${filters.pays}`),
-      fetch(`${apiUrl}/api/corbeille`),
-      fetch(`${apiUrl}/api/formations`),
-      fetch(`${apiUrl}/api/pays`),
+      fetch(apiUrl('/api/stats')),
+      fetch(apiUrl(`/api/inscriptions?search=${filters.search}&formation=${filters.formation}&pays=${filters.pays}`)),
+      fetch(apiUrl('/api/corbeille')),
+      fetch(apiUrl('/api/formations')),
+      fetch(apiUrl('/api/pays')),
     ]);
 
     setStats(await statsRes.json());
@@ -36,14 +36,12 @@ export default function DashboardPage() {
   }, [filters]);
 
   const softDelete = async (id) => {
-    const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:5000';
-    await fetch(`${apiUrl}/api/inscriptions/${id}/delete`, { method: 'POST' });
+    await fetch(apiUrl(`/api/inscriptions/${id}/delete`), { method: 'POST' });
     load();
   };
 
   const restore = async (id) => {
-    const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:5000';
-    await fetch(`${apiUrl}/api/inscriptions/${id}/restore`, { method: 'POST' });
+    await fetch(apiUrl(`/api/inscriptions/${id}/restore`), { method: 'POST' });
     load();
   };
 
@@ -51,8 +49,7 @@ export default function DashboardPage() {
     if (!window.confirm('Supprimer définitivement cette inscription ? Cette action est irréversible.')) {
       return;
     }
-    const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:5000';
-    await fetch(`${apiUrl}/api/inscriptions/${id}/destroy`, { method: 'POST' });
+    await fetch(apiUrl(`/api/inscriptions/${id}/destroy`), { method: 'POST' });
     load();
   };
 
@@ -60,8 +57,7 @@ export default function DashboardPage() {
     if (!window.confirm('Vider complètement la corbeille ? Toutes les inscriptions supprimées définitivement seront perdues.')) {
       return;
     }
-    const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:5000';
-    await fetch(`${apiUrl}/api/corbeille/clear`, { method: 'POST' });
+    await fetch(apiUrl('/api/corbeille/clear'), { method: 'POST' });
     load();
   };
 
@@ -69,7 +65,7 @@ export default function DashboardPage() {
     <div className="min-h-screen bg-slate-950 p-6 text-slate-100">
       <div className="mx-auto max-w-7xl">
         <div className="flex items-center justify-between gap-4">
-          <h1 className="text-4xl font-black text-cyan-300">Dashboard TEAM AID</h1>
+          <h1 className="text-4xl font-black text-cyan-300">ADMINISTRATION TEAM AID</h1>
           <button onClick={logout} className="rounded-xl border border-cyan-400/40 bg-slate-800 px-4 py-2 text-sm font-semibold">Se déconnecter</button>
         </div>
 
