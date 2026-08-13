@@ -15,7 +15,7 @@ const port = Number(process.env.PORT || 5000);
    CONFIGURATION
 ========================================================= */
 
-const allowedOrigins = [
+const defaultOrigins = [
   'http://localhost:5173',
   'http://127.0.0.1:5173',
   'http://localhost:3000',
@@ -23,15 +23,43 @@ const allowedOrigins = [
   'http://localhost:4173',
   'http://127.0.0.1:4173',
   'http://localhost:8080',
-  'http://127.0.0.1:8080'
+  'http://127.0.0.1:8080',
+  'https://team-aid-production.up.railway.app'
 ];
 
-app.use(cors({
+const envOrigins = process.env.ALLOWED_ORIGINS
+  ? process.env.ALLOWED_ORIGINS
+      .split(',')
+      .map((origin) => origin.trim().replace(/\/$/, ''))
+      .filter(Boolean)
+  : [];
+
+const allowedOrigins = [
+  ...new Set([...defaultOrigins, ...envOrigins])
+];
+
+// Apply CORS only to API routes to avoid interfering with static asset requests
+app.use('/api', cors({
   origin: (origin, callback) => {
-    if (!origin || allowedOrigins.includes(origin) || /^http:\/\/(localhost|127\.0\.0\.1):\d+$/.test(origin)) {
+    // Allow non-browser requests (curl, server-to-server) where origin is undefined
+    if (!origin) {
       callback(null, true);
       return;
     }
+
+    // Normaliser l’origine pour accepter une éventuelle barre oblique finale.
+    const normalizedOrigin = origin.replace(/\/$/, '');
+
+    // Allow if origin matches configured list or localhost pattern
+    if (
+      allowedOrigins.includes(normalizedOrigin) ||
+      /^https?:\/\/(localhost|127\.0\.0\.1):\d+$/.test(normalizedOrigin)
+    ) {
+      callback(null, true);
+      return;
+    }
+
+    console.warn('Blocked CORS origin:', origin);
 
     callback(new Error('Origine non autorisée par CORS'));
   },
@@ -39,6 +67,7 @@ app.use(cors({
   methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization']
 }));
+
 app.use(express.json());
 
 /* =========================================================
