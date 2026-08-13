@@ -31,9 +31,59 @@ body {
    sur fond sombre) et la flche de deroulement visible.
 ========================================================= */
 
+.iti {
+  width: 100%;
+}
+
+.iti__flag-container {
+  background: transparent;
+}
+
+.iti__selected-flag {
+  background: rgba(15, 23, 42, 0.7) !important;
+  border-right: 1px solid rgba(34, 211, 238, 0.35);
+  padding: 0 10px 0 12px;
+}
+
+.iti__country-list {
+  background: #0f172a;
+  border: 1px solid rgba(34, 211, 238, 0.35);
+  border-radius: 12px;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.45);
+  max-height: 300px;
+}
+
+.iti__country {
+  color: #e2e8f0;
+  padding: 10px 14px;
+}
+
+.iti__country:hover,
+.iti__country.iti__active {
+  background: rgba(34, 211, 238, 0.15);
+}
+
+.iti__dial-code {
+  color: #67e8f9;
+}
+
+.iti__divider {
+  border-bottom-color: rgba(148, 163, 184, 0.35);
+}
+
+.iti__search-input {
+  background: #020617;
+  color: #e2e8f0;
+  border: 1px solid rgba(34, 211, 238, 0.35);
+  border-radius: 8px;
+  padding: 10px 12px;
+  font-size: 16px;
+}
+
 select {
   color: #e2e8f0;
   background-color: #020617;
+  font-family: Inter, "Segoe UI Emoji", "Apple Color Emoji", "Noto Color Emoji", sans-serif;
   -webkit-appearance: none;
   -moz-appearance: none;
   appearance: none;
@@ -48,14 +98,18 @@ select {
 select option {
   color: #0f172a;
   background-color: #ffffff;
+  font-family: "Segoe UI Emoji", "Apple Color Emoji", "Noto Color Emoji", sans-serif;
   font-size: 16px;
   padding: 12px;
 }
 
-/* iOS : empeche le zoom automatique sur les selects */
 @media (max-width: 767px) {
   select {
     font-size: 16px;
+  }
+
+  .iti__country-list {
+    max-height: 70vh;
   }
 }
 
@@ -64,3 +118,98 @@ textarea {
   width: 100%;
   font-size: 16px;
 }
+
+.register-page-shell {
+  position: relative;
+  overflow: hidden;
+  background:
+    radial-gradient(circle at 50% 42%, rgba(255, 214, 102, 0.12), transparent 18%),
+    linear-gradient(180deg, rgba(1, 8, 20, 1) 0%, rgba(2, 8, 23, 1) 100%);
+}
+
+.register-bg {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.register-bg::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: min(92vw, 980px);
+  height: min(82vw, 820px);
+  background-image: url('/team-aid-logo.png');
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: contain;
+  opacity: 1;
+  filter: drop-shadow(0 0 20px rgba(255, 196, 84, 0.28)) drop-shadow(0 0 45px rgba(255, 196, 84, 0.15));
+}
+
+.register-content {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-height: 100vh;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.register-form {
+  position: relative;
+  z-index: 2;
+  width: min(100%, 1100px);
+  margin: 0 auto;
+  /* Le panneau reste lisible, tout en laissant le logo apparaître nettement derrière. */
+  background: rgba(15, 23, 42, 0.38);
+  border: 1px solid rgba(250, 204, 21, 0.24);
+  box-shadow: 0 0 30px rgba(34, 211, 238, 0.10), 0 0 60px rgba(249, 115, 22, 0.05);
+  backdrop-filter: blur(1px);
+}
+
+@media (max-width: 767px) {
+  .register-bg::before {
+    width: min(118vw, 860px);
+    height: min(96vw, 700px);
+    top: 48%;
+  }
+
+  .register-content {
+    padding-top: 1.25rem;
+    padding-bottom: 1.25rem;
+  }
+
+  .register-form {
+    padding: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .register-bg::before {
+    width: min(146vw, 760px);
+    height: min(116vw, 620px);
+    top: 46%;
+  }
+
+  .register-content {
+    min-height: 100dvh;
+  }
+}
+
+@media (orientation: portrait) and (max-width: 768px) {
+  .register-bg::before {
+    width: min(140vw, 780px);
+    height: min(108vw, 660px);
+    top: 46%;
+  }
+}
+
