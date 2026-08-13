@@ -150,9 +150,11 @@ textarea {
   background-repeat: no-repeat;
   background-position: center center;
   background-size: contain;
-  opacity: 0.72;
-  filter: drop-shadow(0 0 20px rgba(255, 196, 84, 0.32))
-    drop-shadow(0 0 45px rgba(255, 196, 84, 0.18));
+  opacity: 0.92;
+  mix-blend-mode: screen;
+  filter: brightness(1.22) saturate(1.18)
+    drop-shadow(0 0 22px rgba(255, 196, 84, 0.52))
+    drop-shadow(0 0 55px rgba(255, 196, 84, 0.34));
 }
 
 .register-content {
@@ -172,7 +174,7 @@ textarea {
   width: min(100%, 1100px);
   margin: 0 auto;
   /* Le panneau reste lisible, tout en laissant le logo apparaître nettement derrière. */
-  background: rgba(15, 23, 42, 0.38);
+  background: rgba(15, 23, 42, 0.30);
   border: 1px solid rgba(250, 204, 21, 0.24);
   box-shadow: 0 0 30px rgba(34, 211, 238, 0.10), 0 0 60px rgba(249, 115, 22, 0.05);
   backdrop-filter: blur(1px);
@@ -184,7 +186,7 @@ textarea {
     width: min(84vw, 760px);
     height: min(62vh, 640px);
     top: 50%;
-    opacity: 0.64;
+    opacity: 0.82;
   }
 }
 
@@ -194,8 +196,10 @@ textarea {
     width: min(92vw, 460px);
     height: min(52vh, 460px);
     top: 48%;
-    opacity: 0.58;
-    filter: drop-shadow(0 0 14px rgba(255, 196, 84, 0.28));
+    opacity: 0.78;
+    filter: brightness(1.18) saturate(1.12)
+      drop-shadow(0 0 18px rgba(255, 196, 84, 0.46))
+      drop-shadow(0 0 38px rgba(255, 196, 84, 0.28));
   }
 
   .register-content {
@@ -213,7 +217,7 @@ textarea {
     width: 92vw;
     height: min(45vh, 380px);
     top: 44%;
-    opacity: 0.52;
+    opacity: 0.70;
   }
 
   .register-content {
