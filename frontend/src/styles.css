@@ -143,14 +143,16 @@ textarea {
   left: 50%;
   top: 50%;
   transform: translate(-50%, -50%);
-  width: min(92vw, 980px);
-  height: min(82vw, 820px);
+  /* Ordinateur : grand logo centré sans dépasser la fenêtre. */
+  width: min(78vw, 900px);
+  height: min(72vh, 780px);
   background-image: url('/team-aid-logo.png');
   background-repeat: no-repeat;
   background-position: center center;
   background-size: contain;
-  opacity: 1;
-  filter: drop-shadow(0 0 20px rgba(255, 196, 84, 0.28)) drop-shadow(0 0 45px rgba(255, 196, 84, 0.15));
+  opacity: 0.72;
+  filter: drop-shadow(0 0 20px rgba(255, 196, 84, 0.32))
+    drop-shadow(0 0 45px rgba(255, 196, 84, 0.18));
 }
 
 .register-content {
@@ -176,11 +178,24 @@ textarea {
   backdrop-filter: blur(1px);
 }
 
+@media (max-width: 1024px) {
+  .register-bg::before {
+    /* Tablette et petit ordinateur portable. */
+    width: min(84vw, 760px);
+    height: min(62vh, 640px);
+    top: 50%;
+    opacity: 0.64;
+  }
+}
+
 @media (max-width: 767px) {
   .register-bg::before {
-    width: min(118vw, 860px);
-    height: min(96vw, 700px);
+    /* Téléphone : visible sans recouvrir complètement le formulaire. */
+    width: min(92vw, 460px);
+    height: min(52vh, 460px);
     top: 48%;
+    opacity: 0.58;
+    filter: drop-shadow(0 0 14px rgba(255, 196, 84, 0.28));
   }
 
   .register-content {
@@ -195,9 +210,10 @@ textarea {
 
 @media (max-width: 480px) {
   .register-bg::before {
-    width: min(146vw, 760px);
-    height: min(116vw, 620px);
-    top: 46%;
+    width: 92vw;
+    height: min(45vh, 380px);
+    top: 44%;
+    opacity: 0.52;
   }
 
   .register-content {
@@ -205,11 +221,11 @@ textarea {
   }
 }
 
-@media (orientation: portrait) and (max-width: 768px) {
+@media (orientation: landscape) and (max-width: 900px) {
   .register-bg::before {
-    width: min(140vw, 780px);
-    height: min(108vw, 660px);
-    top: 46%;
+    width: min(70vw, 620px);
+    height: min(72vh, 520px);
+    top: 50%;
   }
 }
 
