@@ -338,7 +338,7 @@ export default function RegisterPage() {
     }
   };
 
-  const shareLink = 'https://team-aid.local';
+  const shareLink = 'https://team-aid-production.up.railway.app';
 
   const handleShare = (type) => {
     const url = `${shareMessage}${shareLink}`;
@@ -376,7 +376,25 @@ export default function RegisterPage() {
               <option value="F">F</option>
               <option value="Autre">Autre</option>
             </select>
-            <input type="date" className="rounded-xl border border-cyan-400/30 bg-slate-950 p-3" name="dateNaissance" value={form.dateNaissance} onChange={handleChange} required />
+            <div className="date-field">
+              <label htmlFor="dateNaissance" className="mb-2 block text-sm font-medium text-slate-200">
+                Date de naissance
+              </label>
+              <p className="mb-2 text-xs text-slate-400">
+                Veuillez sélectionner votre date de naissance
+              </p>
+              <input
+                id="dateNaissance"
+                type="date"
+                className="w-full rounded-xl border border-cyan-400/30 bg-slate-950 p-3 text-slate-100"
+                name="dateNaissance"
+                value={form.dateNaissance}
+                onChange={handleChange}
+                aria-label="Sélectionnez votre date de naissance"
+                title="Sélectionnez votre date de naissance"
+                required
+              />
+            </div>
             <div className="md:col-span-1">
               <label className="mb-2 block text-sm text-slate-300">Téléphone</label>
               <input
